@@ -58,266 +58,50 @@ Todo
 
  * Convert all BlueButton.js files from JavaScript to Python
 
-<table>
-	<thead>
-	<tr>
-		<th>BlueButton.js file</th>
-		<th>Python equivalent</th>
-		<th>Notes</th>
-		<th>Ported?</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr>
-	<td> <code>lib/bluebutton.js</code> </td>
-	<td> <code>pyccda/__init__.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/core.js</code> </td>
-	<td> <code>pyccda/core/__init__.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/core/codes.js</code> </td>
-	<td> <code>pyccda/core/codes.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/core/xml.js</code> </td>
-	<td> <code>pyccda/core/xml.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/documents.js</code> </td>
-	<td> <code>pyccda/documents/__init__.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/documents/c32.js</code> </td>
-	<td> <code>pyccda/documents/c32.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/documents/ccda.js</code> </td>
-	<td> <code>pyccda/documents/ccda.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/generators.js</code> </td>
-	<td> <code>pyccda/generators/__init__.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/generators/c32.js</code> </td>
-	<td> <code>pyccda/generators/c32.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/generators/ccda.js</code> </td>
-	<td> <code>pyccda/generators/ccda.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/generators/ccda_template.ejs</code> </td>
-	<td>
-	<em>N/A</em>
-	</td>
-	<td>&nbsp;</td>
-	<td>&nbsp;</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers.js</code> </td>
-	<td> <code>pyccda/parsers/__init__.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32.js</code> </td>
-	<td> <code>pyccda/parsers/c32/__init__.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/allergies.js</code> </td>
-	<td> <code>pyccda/parsers/c32/allergies.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/demographics.js</code> </td>
-	<td> <code>pyccda/parsers/c32/demographics.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/document.js</code> </td>
-	<td> <code>pyccda/parsers/c32/document.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/encounters.js</code> </td>
-	<td> <code>pyccda/parsers/c32/encounters.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/immunizations.js</code> </td>
-	<td> <code>pyccda/parsers/c32/immunizations.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/medications.js</code> </td>
-	<td> <code>pyccda/parsers/c32/medications.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/problems.js</code> </td>
-	<td> <code>pyccda/parsers/c32/problems.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/procedures.js</code> </td>
-	<td> <code>pyccda/parsers/c32/procedures.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/results.js</code> </td>
-	<td> <code>pyccda/parsers/c32/results.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/c32/vitals.js</code> </td>
-	<td> <code>pyccda/parsers/c32/vitals.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda.js</code> </td>
-	<td> <code>pyccda/parsers/ccd/__init__.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/allergies.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/allergies.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/care_plan.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/care_plan.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/demographics.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/demographics.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/document.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/document.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/encounters.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/encounters.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/free_text.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/free_text.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/functional_statuses.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/functional_statuses.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/immunizations.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/immunizations.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/instructions.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/instructions.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/medications.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/medications.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/problems.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/problems.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/procedures.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/procedures.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/results.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/results.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/smoking_status.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/smoking_status.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr>
-	<td> <code>lib/parsers/ccda/vitals.js</code> </td>
-	<td> <code>pyccda/parsers/ccda/vitals.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/renderers.js</code> </td>
-	<td> <code>pyccda/renderers/__init__.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	<tr class="alt">
-	<td> <code>lib/renderers/html.js</code> </td>
-	<td> <code>pyccda/renderers/html.py</code> </td>
-	<td>&nbsp;</td>
-	<td>Not yet</td>
-	</tr>
-	</tbody>
-</table>
+| BlueButton.js file | Python equivalent | Notes | Ported? |
+| :------------------ | :----------------- | :----- | :-------: |
+| ```lib/bluebutton.js``` | ```pyccda/__init__.py``` | - | Not yet |
+| ```lib/core.js``` | ```pyccda/core/__init__.py``` | - | Not yet |
+| ```lib/core/codes.js``` | ```pyccda/core/codes.py``` | - | Not yet |
+| ```lib/core/xml.js``` | ```pyccda/core/xml.py``` | - | Not yet |
+| ```lib/documents.js``` | ```pyccda/documents/__init__.py``` | - | Not yet |
+| ```lib/documents/c32.js``` | ```pyccda/documents/c32.py``` | - | Not yet |
+| ```lib/documents/ccda.js``` | ```pyccda/documents/ccda.py``` | - | Not yet |
+|```lib/documents/ccda.js```|```pyccda/documents/ccda.py```|   | Not yet |
+|```lib/generators.js```|```pyccda/generators/__init__.py```|   | Not yet |
+|```lib/generators/c32.js```|```pyccda/generators/c32.py```|   | Not yet |
+|```lib/generators/ccda.js```|```pyccda/generators/ccda.py```|   | Not yet |
+|```lib/generators/ccda_template.ejs```| NA|   |   |
+|```lib/parsers.js```|```pyccda/parsers/__init__.py```|   | Not yet |
+|```lib/parsers/c32.js```|```pyccda/parsers/c32/__init__.py```|   | Not yet |
+|```lib/parsers/c32/allergies.js```|```pyccda/parsers/c32/allergies.py```|   | Not yet |
+|```lib/parsers/c32/demographics.js```|```pyccda/parsers/c32/demographics.py```|   | Not yet |
+|```lib/parsers/c32/document.js```|```pyccda/parsers/c32/document.py```|   | Not yet |
+|```lib/parsers/c32/encounters.js```|```pyccda/parsers/c32/encounters.py```|   | Not yet |
+|```lib/parsers/c32/immunizations.js```|```pyccda/parsers/c32/immunizations.py```|   | Not yet |
+|```lib/parsers/c32/medications.js```|```pyccda/parsers/c32/medications.py```|   | Not yet |
+|```lib/parsers/c32/problems.js```|```pyccda/parsers/c32/problems.py```|   | Not yet |
+|```lib/parsers/c32/procedures.js```|```pyccda/parsers/c32/procedures.py```|   | Not yet |
+|```lib/parsers/c32/results.js```|```pyccda/parsers/c32/results.py```|   | Not yet |
+|```lib/parsers/c32/vitals.js```|```pyccda/parsers/c32/vitals.py```|   | Not yet |
+|```lib/parsers/ccda.js```|```pyccda/parsers/ccd/__init__.py```|   | Not yet |
+|```lib/parsers/ccda/allergies.js```|```pyccda/parsers/ccda/allergies.py```|   | Not yet |
+|```lib/parsers/ccda/care_plan.js```|```pyccda/parsers/ccda/care_plan.py```|   | Not yet |
+|```lib/parsers/ccda/demographics.js```|```pyccda/parsers/ccda/demographics.py```|   | Not yet |
+|```lib/parsers/ccda/document.js```|```pyccda/parsers/ccda/document.py```|   | Not yet |
+|```lib/parsers/ccda/encounters.js```|```pyccda/parsers/ccda/encounters.py```|   | Not yet |
+|```lib/parsers/ccda/free_text.js```|```pyccda/parsers/ccda/free_text.py```|   | Not yet |
+|```lib/parsers/ccda/functional_statuses.js```|```pyccda/parsers/ccda/functional_statuses.py```|   | Not yet |
+|```lib/parsers/ccda/immunizations.js```|```pyccda/parsers/ccda/immunizations.py```|   | Not yet |
+|```lib/parsers/ccda/instructions.js```|```pyccda/parsers/ccda/instructions.py```|   | Not yet |
+|```lib/parsers/ccda/medications.js```|```pyccda/parsers/ccda/medications.py```|   | Not yet |
+|```lib/parsers/ccda/problems.js```|```pyccda/parsers/ccda/problems.py```|   | Not yet |
+|```lib/parsers/ccda/procedures.js```|```pyccda/parsers/ccda/procedures.py```|   | Not yet |
+|```lib/parsers/ccda/results.js```|```pyccda/parsers/ccda/results.py```|   | Not yet |
+|```lib/parsers/ccda/smoking_status.js```|```pyccda/parsers/ccda/smoking_status.py```|   | Not yet |
+|```lib/parsers/ccda/vitals.js```|```pyccda/parsers/ccda/vitals.py```|   | Not yet |
+|```lib/renderers.js```|```pyccda/renderers/__init__.py```|   | Not yet |
+|```lib/renderers/html.js```|```pyccda/renderers/html.py```|   | Not yet |
 
 Testing
 -------
