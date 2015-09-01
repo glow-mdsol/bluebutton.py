@@ -168,22 +168,8 @@ class BlueButtonTestClass(unittest.TestCase):
 
 
 class SampleCCDATests(BlueButtonTestClass):
+    # TODO: look at parallel testing, this runs slowly
     __metaclass__ = TestDocumentsMeta
-
-    def get_sample_ccda(self):
-        """
-        Search the bower_components for xml files and returns the paths
-        :return: list of paths
-        """
-        matches = []
-        to_search = prefix + '/bluebutton.js/bower_components/sample_ccdas'
-        for root, dirs, files in os.walk(to_search):
-            for file in files:
-                if file.endswith(".xml"):
-                    # append the path, stripping the prefix
-                    matches.append(os.path.join(root, file).replace(prefix, ''))
-
-        return matches
 
 
 class PortTests(BlueButtonTestClass):
