@@ -53,11 +53,11 @@ can be found in the LICENSE file.
 
 The source code is available on GitHub:
 
-	git clone https://github.com/ctsit/bluebutton.py
+    git clone https://github.com/ctsit/bluebutton.py
 
 For instructions on setting up the developer's environment, run:
 
-	make develop
+    make help
 
 The Technical Specification can be found in docs/specs.md.
 
