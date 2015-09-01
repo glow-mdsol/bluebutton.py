@@ -28,7 +28,6 @@ setuptools.setup(
     ],
     setup_requires=[
         "nose >= 1.0",
-        "nosexcover >= 1.0.10",
-        "python-Levenshtein"
+        "nosexcover >= 1.0.10"
     ],
 )
