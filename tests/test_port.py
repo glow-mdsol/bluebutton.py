@@ -43,10 +43,9 @@ def get_sample_folders():
     matches = {}
     to_search = prefix + '/bluebutton.js/bower_components/sample_ccdas'
     for root, dirs, files in os.walk(to_search):
-        for file in files:
-            if file.endswith(".xml"):
-                # append the path, stripping the prefix
-                matches.setdefault(root.replace(prefix, ''), []).append(file)
+        for filename in filter(lambda x: x.lower().endswith('.xml'), files):
+            # append the path, stripping the prefix
+            matches.setdefault(root.replace(prefix, ''), []).append(filename)
     return matches
 
 
