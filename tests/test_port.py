@@ -15,17 +15,37 @@ import re
 import subprocess
 import traceback
 import unittest
-import Levenshtein
 import sys
 
 import bluebutton
 
 prefix = os.path.realpath(__file__ + '/../..')
 
+# XML Declaration failures - owing to the bluebutton.js requiring a <?xml declaration
+# these files fail to parse
+XMLDECL = ("LMR1TEST.xml",
+           "LMR2TEST.xml",
+           "LMR3TEST.xml",
+           "LMR4TEST.xml",
+           "LMR5TEST.xml",
+           "partners.ccda.xml",
+           "AdamEveryman-ReferralSummary.xml",
+           "IsabellaJones-ReferralSummary.xml",
+           "MaryGrant-ClinicalSummary.xml")
+
+# Defunct format files - inconsistent date formats, etc
+# add files and reason for excluding here
+IRREGULAR = ('26933_ExportSummary_CCDA.xml', # has a effectiveTime with value of '000101'
+             )
+
+# a list of know failures where the document is 'at fault' - we should work to whittle this block down
+# through improved handling or fixed files
+BLACKLIST = XMLDECL + IRREGULAR
+
 
 def escape_name(name):
     """
-    replace all the unacceptable chars with underscores and lowercase
+    replace all the unacceptable chars with underscores and lowercase - used in building test case names
     :param name: file name
     :type name str
     :return:
@@ -44,6 +64,8 @@ def get_sample_folders():
     to_search = prefix + '/bluebutton.js/bower_components/sample_ccdas'
     for root, dirs, files in os.walk(to_search):
         for filename in filter(lambda x: x.lower().endswith('.xml'), files):
+            if filename in BLACKLIST:
+                continue
             # append the path, stripping the prefix
             matches.setdefault(root.replace(prefix, ''), []).append(filename)
     return matches
@@ -54,14 +76,15 @@ sample_ccdas = get_sample_folders()
 
 
 class TestDocumentsMeta(type):
-
     def __new__(mcs, name, bases, dict):
 
         def gen_test(filename):
             def test(self):
                 def check(t):
                     self.python_output_is_same_as_javascript(testfile=prefix + t)
+
                 check(filename)
+
             return test
 
         for document_root, files in sample_ccdas.items():
@@ -74,8 +97,95 @@ class TestDocumentsMeta(type):
         return type.__new__(mcs, name, bases, dict)
 
 
-class BlueButtonTestClass(unittest.TestCase):
+def class_compare(a, b):
+    """
+    Compares two instances types together accounting for the dict <=> DictWrapper
+    :param a: an instance
+    :type a object
+    :param b: an instance
+    :type b object
+    :return: whether the two instances are of the same type
+    :rtype: bool
+    """
+    if type(a) == type(b):
+        return True
+    elif isinstance(a, dict) and isinstance(b, dict):
+        # type signatures differ for dict and DictWrapper
+        return True
+    return False
 
+
+def text_sections_match(a, b):
+    """
+    Compare two text sections, stripping all white space and inconsequential character
+    NOTE: due to the way the JS and PY get generated, empty fields can be either None or ''
+     we assume in the case where one is '' and the other None then these are equivalent
+    :param a: left hand text
+    :type a str
+    :param b: right hand text
+    :type b str
+    :return: a bool summarising whether the strings are equivalent
+    :rtype: bool
+    """
+    # String matching is challenging! Remove whitespace and try again
+    if isinstance(a, basestring) and isinstance(b, basestring):
+        if "".join(a.lower().split()) == "".join(b.lower().split()):
+            return True
+    elif a in ['', None] and b in ['', None]:
+        # empty strings match
+        return True
+    return False
+
+
+def compare_dicts(a, b, path=[]):
+    """
+    Compare two nested dicts, returns True and the current path if the dicts match, False if an inconsistency
+    :param a: left hand dict
+    :type a dict
+    :param b: right hand dict
+    :type b dict
+    :param path: accumulated path in the tree
+    :type path list
+    :return: state and path
+    :rtype: tuple
+    """
+    state = True
+    for key in set(a.keys()).union(set(b.keys())):
+        if prettify(a[key]) == prettify(b[key]):
+            # they match at a macro level, go no further
+            continue
+        # add the current key to the path
+        path.append(key)
+        if isinstance(a[key], dict):
+            state, path = compare_dicts(a[key], b[key], path)
+        elif isinstance(a[key], list):
+            for _a, _b in zip(a[key], b[key]):
+                if isinstance(_a, dict):
+                    state, path = compare_dicts(_a, _b, path)
+                else:
+                    state = _a == _b
+        else:
+            state = a[key] == b[key]
+            if state is False:
+                if key == u'text':
+                    # we know that text sections can differ, so add another layer of checking for content
+                    #  similarity
+                    state = text_sections_match(a[key], b[key])
+                elif a[key] in ["", None] and b[key] in ["", None]:
+                    # Owing to the way empty elements get deserialised by the XML parser to
+                    #  empty strings, whereas the JS of nil gets munged to None
+                    state = a[key] in ["", None] and b[key] in ["", None]
+        # get out of the loop
+        if state is False:
+            return state, path
+        # remove the key
+        path.pop()
+
+    return state, path
+
+
+class BlueButtonTestClass(unittest.TestCase):
+    """Shared Parent Class for bluebutton.py unit tests"""
     def python_output_is_same_as_javascript(self, section_name=None,
                                             testfile=None):
         """ Compares JavaScript output to Python """
@@ -130,45 +240,35 @@ class BlueButtonTestClass(unittest.TestCase):
         :return: do the structures match?
         :rtype : bool
         """
-        if set(py.keys()).difference(js.keys()):
-            # different keys, that's a fail
-            return False, 'sections'
-        for section_name in sorted(py.keys()):
-            js_section = js.get(section_name)
-            py_section = py.get(section_name)
-            if js_section != py_section:
-                if not type(py_section) == type(js_section):
-                    # if the types of the section differ then that's a problem
-                    return False, section_name
-                for py, js in zip(py_section, js_section):
-                    if py != js:
-                        # doesn't match, let's dig a little deeper
-                        for attr, value in py.items():
-                            if py.get(attr) != js.get(attr):
-                                if py.get(attr) == '' and js.get(attr) is None:
-                                    # the way that empty strings are interpreted
-                                    continue
-                                if attr != u'text':
-                                    # if one of the non-text sections doesn't match
-                                    # then that's a automatic fail
-                                    return False, section_name
-                                else:
-                                    try:
-                                        # String matching is challenging! Remove whitespace and try again
-                                        _py_text = "".join(py.get(attr).split())
-                                        _js_text = "".join(js.get(attr).split())
-                                        if Levenshtein.distance(_py_text, _js_text) > 0:
-                                            return False, section_name
-                                    except TypeError:
-                                        # Not
-                                        return False, section_name
-        else:
+        if prettify(js) == prettify(py):
+            # quick compare
             return True, None
+
+        return compare_dicts(py, js)
 
 
 class SampleCCDATests(BlueButtonTestClass):
     # TODO: look at parallel testing, this runs slowly
     __metaclass__ = TestDocumentsMeta
+
+
+class GreenwayCCDATests(BlueButtonTestClass):
+
+    def test_bom_parsing(self):
+        filepath = '/bluebutton.js/bower_components/sample_ccdas/' + \
+            'Greenway Samples/26562_ExportSummary_CCDA.xml'
+        filename = prefix + filepath
+        with open(filename, 'r') as fp:
+            xml = fp.read()
+            try:
+                bb = bluebutton.BlueButton(xml)
+            except (ValueError, AttributeError) as e:
+                exc_type, exc_value, exc_traceback = sys.exc_info()
+                self.fail("Error processing %s: %s (%s)" % (filename.replace(prefix, ''),
+                                                            e.message,
+                                                            traceback.print_tb(exc_traceback)))
+        self.assertEqual(["Maria"], bb.data.demographics.name.given)
+        self.assertEqual("Hernandez", bb.data.demographics.name.family)
 
 
 class PortTests(BlueButtonTestClass):

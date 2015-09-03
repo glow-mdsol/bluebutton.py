@@ -5,6 +5,7 @@
 ###############################################################################
 
 import datetime
+import re
 
 from ..core import wrappers
 
@@ -75,6 +76,14 @@ def parse_date(string):
     if not isinstance(string, basestring):
         return None
 
+    if len(string) < 4:
+        # not even a year
+        return None
+
+    if int(string[:4]) < 1800:
+        # Arbitrate on the year value
+        return None
+
     # ex. value="1999" translates to 1 Jan 1999
     if len(string) == 4:
         return datetime.date(int(string), 1, 1)
@@ -86,14 +95,31 @@ def parse_date(string):
     # check for time info (the presence of at least hours and mins after the
     # date)
     if len(string) >= 12:
-        hour = int(string[8:10])
-        mins = int(string[10:12])
-        secs = string[12:14]
-        secs = int(secs) if secs else 0
-
-        # check for timezone info (the presence of chars after the seconds
-        # place)
-        timezone = wrappers.FixedOffset.from_string(string[14:])
+        # owing to the vagueries of the different time formats we can get a range of inputs
+        # Solution: Regex!
+        time_re = re.compile(r'(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?(\.\d+)?([+-]\d{4}|Z)?')
+        if time_re.match(string):
+            # we capture microseconds, have seen in CCDA documents, but throw it away
+            # we do need to capture the timezone, and the microseconds were throwing that off
+            _year, _month, _day, _hour, _mins, _secs, _msecs, _tz = time_re.match(string).groups()
+            year = int(_year)
+            month = int(_month)
+            day = int(_day)
+            hour = int(_hour)
+            mins = int(_mins)
+            if not _secs:
+                secs = 0
+            else:
+                secs = int(_secs)
+            if _tz is None:
+                _tz = ''
+        else:
+            hour = int(string[8:10])
+            mins = int(string[10:12])
+            secs = string[12:14]
+            secs = int(secs) if secs else 0
+            _tz = string[14:]
+        timezone = wrappers.FixedOffset.from_string(_tz)
         return datetime.datetime(year, month, day, hour, mins, secs,
                                  tzinfo=timezone)
 
