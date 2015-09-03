@@ -76,6 +76,14 @@ def parse_date(string):
     if not isinstance(string, basestring):
         return None
 
+    if len(string) < 4:
+        # not even a year
+        return None
+
+    if int(string[:4]) < 1800:
+        # Arbitrate on the year value
+        return None
+
     # ex. value="1999" translates to 1 Jan 1999
     if len(string) == 4:
         return datetime.date(int(string), 1, 1)
