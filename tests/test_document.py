@@ -9,6 +9,7 @@ from bluebutton.core.wrappers import FixedOffset
 
 
 class TestParseDate(unittest.TestCase):
+
     DT = datetime.datetime(2012,1,1,1,1,0)
 
     def test_dateparse_samples(self):
@@ -37,3 +38,15 @@ class TestParseDate(unittest.TestCase):
                                  parsed.tzinfo.utcoffset(self.DT))
             else:
                 self.assertEqual(lib, parsed)
+
+    def test_invalid_date_too_short(self):
+        self.assertEqual(None, parse_date('08'))
+
+    def test_invalid_date_not_positive(self):
+        self.assertEqual(None, parse_date('-08'))
+
+    def test_invalid_date_greenway_case(self):
+        # so the date string '000101' gets parsed to 1901/1/1 by Javascript
+        # python thinks that is insane, I agree with python
+        self.assertEqual(None, parse_date('000101'))
+
