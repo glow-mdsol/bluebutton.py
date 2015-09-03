@@ -10,6 +10,26 @@ import documents.ccda
 import parsers.ccda
 
 
+def bomstrip(string):
+  """
+  Function to delete UTF-8 BOM character in "string"
+  Taken from: https://github.com/zer4tul/utf8-bom-strip/blob/master/snippets/bomstrip.py
+  """
+  import sys
+
+  if sys.version_info.major == 2:
+      utf8bom = '\xef\xbb\xbf'
+  elif sys.version_info.major == 3:
+      utf8bom = b'\xef\xbb\xbf'
+  else:
+      raise Exception('This version of python is not supported.')
+
+  if string[:3] == utf8bom:
+    return(string[3:])
+  else:
+    return(string)
+
+
 class BlueButton(object):
     def __init__(self, source, options=None):
         type, parsed_document, parsed_data = None, None, None
@@ -17,6 +37,7 @@ class BlueButton(object):
         if options is None:
             opts = dict()
 
+        source = bomstrip(source)
         parsed_data = core.parse_data(source)
 
         if 'parser' in opts:
