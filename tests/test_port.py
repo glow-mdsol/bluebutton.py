@@ -22,7 +22,9 @@ import bluebutton
 prefix = os.path.realpath(__file__ + '/../..')
 
 # XML Declaration failures - owing to the bluebutton.js requiring a <?xml declaration
-# these files fail to parse
+# these files fail to parse;
+# [Update] This was amended in
+# https://github.com/blue-button/bluebutton.js/commit/c0ddfbc6364f0329a85eecb99acd90b2e0f00dee
 XMLDECL = ("LMR1TEST.xml",
            "LMR2TEST.xml",
            "LMR3TEST.xml",
@@ -35,12 +37,12 @@ XMLDECL = ("LMR1TEST.xml",
 
 # Defunct format files - inconsistent date formats, etc
 # add files and reason for excluding here
-IRREGULAR = ('26933_ExportSummary_CCDA.xml', # has a effectiveTime with value of '000101'
+IRREGULAR = ('26933_ExportSummary_CCDA.xml',  # has a effectiveTime with value of '000101'
              )
 
-# a list of know failures where the document is 'at fault' - we should work to whittle this block down
-# through improved handling or fixed files
-BLACKLIST = XMLDECL + IRREGULAR
+# a list of know failures where the document is 'at fault' -
+# we should work to whittle this block down through improved handling or fixed files
+BLACKLIST = IRREGULAR
 
 
 def escape_name(name):
@@ -186,6 +188,7 @@ def compare_dicts(a, b, path=[]):
 
 class BlueButtonTestClass(unittest.TestCase):
     """Shared Parent Class for bluebutton.py unit tests"""
+
     def python_output_is_same_as_javascript(self, section_name=None,
                                             testfile=None):
         """ Compares JavaScript output to Python """
@@ -253,10 +256,9 @@ class SampleCCDATests(BlueButtonTestClass):
 
 
 class GreenwayCCDATests(BlueButtonTestClass):
-
     def test_bom_parsing(self):
         filepath = '/bluebutton.js/bower_components/sample_ccdas/' + \
-            'Greenway Samples/26562_ExportSummary_CCDA.xml'
+                   'Greenway Samples/26562_ExportSummary_CCDA.xml'
         filename = prefix + filepath
         with open(filename, 'r') as fp:
             xml = fp.read()
@@ -269,6 +271,70 @@ class GreenwayCCDATests(BlueButtonTestClass):
                                                             traceback.print_tb(exc_traceback)))
         self.assertEqual(["Maria"], bb.data.demographics.name.given)
         self.assertEqual("Hernandez", bb.data.demographics.name.family)
+
+
+class PartnersHealthcareCCDATests(BlueButtonTestClass):
+    """
+    Partners Healthcare are an example of a supplier that
+    don't always have the xml decl
+    """
+    SAMPLES = ("LMR1TEST.xml",
+               "LMR2TEST.xml",
+               "LMR3TEST.xml",
+               "LMR4TEST.xml",
+               "LMR5TEST.xml",
+               "partners.ccda.xml",)
+
+    PREFIX = "/bluebutton.js/bower_components/sample_ccdas" + \
+        "/Partners HealthCare/"
+
+    def test_1(self):
+        filename = self.PREFIX + self.SAMPLES[0]
+
+        def check(t):
+            self.python_output_is_same_as_javascript(testfile=prefix + t)
+
+        check(filename)
+
+    def test_2(self):
+        filename = self.PREFIX + self.SAMPLES[1]
+
+        def check(t):
+            self.python_output_is_same_as_javascript(testfile=prefix + t)
+
+        check(filename)
+
+    def test_3(self):
+        filename = self.PREFIX + self.SAMPLES[2]
+
+        def check(t):
+            self.python_output_is_same_as_javascript(testfile=prefix + t)
+
+        check(filename)
+
+    def test_4(self):
+        filename = self.PREFIX + self.SAMPLES[3]
+
+        def check(t):
+            self.python_output_is_same_as_javascript(testfile=prefix + t)
+
+        check(filename)
+
+    def test_5(self):
+        filename = self.PREFIX + self.SAMPLES[4]
+
+        def check(t):
+            self.python_output_is_same_as_javascript(testfile=prefix + t)
+
+        check(filename)
+
+    def test_6(self):
+        filename = self.PREFIX + self.SAMPLES[5]
+
+        def check(t):
+            self.python_output_is_same_as_javascript(testfile=prefix + t)
+
+        check(filename)
 
 
 class PortTests(BlueButtonTestClass):
