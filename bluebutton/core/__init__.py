@@ -22,7 +22,8 @@ def json():
 def parse_data(source):
     source_stripped = strip_whitespace(source)
 
-    if source_stripped.startswith('<?xml'):
+    if source_stripped.startswith('<?xml') or \
+            source_stripped.startswith("<ClinicalDocument"): # <?xml decl is not compulsory
         return xml.parse(source)
 
     try:
