@@ -22,7 +22,9 @@ import bluebutton
 prefix = os.path.realpath(__file__ + '/../..')
 
 # XML Declaration failures - owing to the bluebutton.js requiring a <?xml declaration
-# these files fail to parse
+# these files fail to parse;
+# [Update] This was amended in
+# https://github.com/blue-button/bluebutton.js/commit/c0ddfbc6364f0329a85eecb99acd90b2e0f00dee
 XMLDECL = ("LMR1TEST.xml",
            "LMR2TEST.xml",
            "LMR3TEST.xml",
@@ -35,12 +37,12 @@ XMLDECL = ("LMR1TEST.xml",
 
 # Defunct format files - inconsistent date formats, etc
 # add files and reason for excluding here
-IRREGULAR = ('26933_ExportSummary_CCDA.xml', # has a effectiveTime with value of '000101'
+IRREGULAR = ('26933_ExportSummary_CCDA.xml',  # has a effectiveTime with value of '000101'
              )
 
-# a list of know failures where the document is 'at fault' - we should work to whittle this block down
-# through improved handling or fixed files
-BLACKLIST = XMLDECL + IRREGULAR
+# a list of know failures where the document is 'at fault' -
+# we should work to whittle this block down through improved handling or fixed files
+BLACKLIST = IRREGULAR
 
 
 def escape_name(name):
@@ -186,6 +188,7 @@ def compare_dicts(a, b, path=[]):
 
 class BlueButtonTestClass(unittest.TestCase):
     """Shared Parent Class for bluebutton.py unit tests"""
+
     def python_output_is_same_as_javascript(self, section_name=None,
                                             testfile=None):
         """ Compares JavaScript output to Python """
@@ -250,25 +253,6 @@ class BlueButtonTestClass(unittest.TestCase):
 class SampleCCDATests(BlueButtonTestClass):
     # TODO: look at parallel testing, this runs slowly
     __metaclass__ = TestDocumentsMeta
-
-
-class GreenwayCCDATests(BlueButtonTestClass):
-
-    def test_bom_parsing(self):
-        filepath = '/bluebutton.js/bower_components/sample_ccdas/' + \
-            'Greenway Samples/26562_ExportSummary_CCDA.xml'
-        filename = prefix + filepath
-        with open(filename, 'r') as fp:
-            xml = fp.read()
-            try:
-                bb = bluebutton.BlueButton(xml)
-            except (ValueError, AttributeError) as e:
-                exc_type, exc_value, exc_traceback = sys.exc_info()
-                self.fail("Error processing %s: %s (%s)" % (filename.replace(prefix, ''),
-                                                            e.message,
-                                                            traceback.print_tb(exc_traceback)))
-        self.assertEqual(["Maria"], bb.data.demographics.name.given)
-        self.assertEqual("Hernandez", bb.data.demographics.name.family)
 
 
 class PortTests(BlueButtonTestClass):
