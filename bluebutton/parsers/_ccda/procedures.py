@@ -35,9 +35,22 @@ def procedures(ccda):
             name = core.strip_whitespace(entry.tag('originalText').val())
 
         # 'specimen' tag not always present
-        specimen_name = None
-        specimen_code = None
-        specimen_code_system = None
+        # [Update] we need to parse it nonetheless
+        # - The specimen, if present, SHALL contain exactly one [1..1] specimenRole (CONF:1098-7704)
+        # If you want to indicate that the Procedure and the Results are referring to the same specimen,
+        #  the Procedure/specimen/specimenRole/id SHOULD be set to equal an
+        #  Organizer/specimen/specimenRole/id (CONF:1098-29744).
+        el = entry.tag('specimen')
+        if el:
+            specimen_role = el.tag('specimenRole')
+            _code = specimen_role.tag('specimenPlayingEntity').tag('code')
+            specimen_name = _code.attr('displayName')
+            specimen_code = _code.attr('code')
+            specimen_code_system = _code.attr('codeSystem')
+        else:
+            specimen_name = None
+            specimen_code = None
+            specimen_code_system = None
 
         el = entry.tag('performer').tag('addr')
         organization = el.tag('name').val()
